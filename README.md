@@ -11,6 +11,7 @@ Applicazione web basata su Quart che legge eventi via BLE e li invia al frontend
 
 ```bash
 python -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .venv\Scripts\Activate.ps1  # su Windows vedi README
 pip install -r requirements.txt
 ```
@@ -30,6 +31,8 @@ Variabili d'ambiente principali:
 
 ## Avvio
 
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.venv\Scripts\Activate.ps1
 python app.py
 
 Poi apri http://localhost:5000 nel browser.
