@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Tabellone Padel Online</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="game-panel">
+    <div class="game-header">
+      <div id="status">
+        Connessione: <span id="conn-status">in sospeso</span>
+      </div>
+    </div>
+
+    <div class="game-content">
+      <div class="scoreboard-wrapper">
+
+        <div id="top-band" class="top-band">
+          <div class="top-col left">
+            <div id="serve-box-team1" class="serve-box red"></div>
+            <div id="set-summary-left" class="set-summary"></div>
+          </div>
+
+          <div class="top-col center">
+            <div id="timer">00:00</div>
+          </div>
+
+          <div class="top-col right">
+            <div id="serve-box-team2" class="serve-box blue"></div>
+            <div id="set-summary-right" class="set-summary"></div>
+          </div>
+        </div>
+
+        <!-- Messaggio centrale (sotto la banda) -->
+        <div id="score-msg" class="message-box"></div>
+
+        <div class="scoreboard-main">
+
+          <!-- Label "Game" piazzato manualmente in CSS -->
+          <div class="game-label">Game</div>
+
+          <!-- Team Red -->
+          <div class="team-label team1">
+            <span class="team-name">TEAM RED</span>
+          </div>
+          <div id="team1-score"  class="team-data team1-points">0</div>
+          <div id="team1-games"  class="team-data team1-games">0</div>
+          <div id="team1-sets"   class="team-data team1-sets">0</div>
+
+          <!-- Team Blue -->
+          <div class="team-label team2">
+            <span class="team-name">TEAM BLUE</span>
+          </div>
+
+          <div id="team2-score"  class="team-data team2-points">0</div>
+          <div id="team2-games"  class="team-data team2-games">0</div>
+          <div id="team2-sets"   class="team-data team2-sets">0</div>
+
+          <!-- Set corrente -->
+          <div id="current-set">Set: 1</div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

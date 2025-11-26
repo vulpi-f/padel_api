@@ -1,0 +1,13 @@
+# ambiente virtuale
+.venv/
+
+# bytecode Python
+__pycache__/
+*.py[cod]
+
+# file di ambiente
+.env
+
+# varie
+*.log
+.DS_Store

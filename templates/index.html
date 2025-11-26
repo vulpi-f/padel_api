@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Tabellone Padel Online</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="show-scoreboard">
+  <div id="app-root">
+
+    <!-- MINI‑SCOREBOARD (table 2x4) -->
+    <table id="mini-scoreboard">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Punti</th>
+          <th>Game</th>
+          <th>Set</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mini-name" id="mini-team1-name">RED</td>
+          <td id="mini-team1-score">0</td>
+          <td id="mini-team1-games">0</td>
+          <td id="mini-team1-sets">0</td>
+        </tr>
+        <tr>
+          <td class="mini-name" id="mini-team2-name">BLUE</td>
+          <td id="mini-team2-score">0</td>
+          <td id="mini-team2-games">0</td>
+          <td id="mini-team2-sets">0</td>
+        </tr>
+      </tbody>
+    </table>
+  <!-- FULL‑SCREEN AD VIEW -->
+  <div id="ad-fullscreen"></div>
+
+  <!-- SCOREBOARD VIEW -->
+  <div id="scoreboard-view" class="game-panel">
+    <div class="game-header">
+      <div id="status">
+        Connessione: <span id="conn-status">in sospeso</span>
+      </div>
+    </div>
+
+    <div class="game-content">
+      <!-- CONTENITORE UNICO ADS -->
+      <div id="ad-container"></div>
+
+      <!-- TABELLONE -->
+      <div class="scoreboard-wrapper">
+        <div class="scoreboard-grid">
+          <!-- Colonna 1 – summary LEFT -->
+          <div class="summary-slot left-slot">
+            <div id="set-summary-left" class="set-summary"></div>
+          </div>
+
+          <!-- Riga 1 -->
+          <div id="serve-box-team1" class="serve-box red"></div>
+          <div id="timer">00:00</div>
+          <div id="serve-box-team2" class="serve-box blue"></div>
+
+          <!-- Colonna 5 – summary RIGHT -->
+          <div class="summary-slot right-slot">
+            <div id="set-summary-right" class="set-summary"></div>
+          </div>
+
+          <!-- Riga 2 -->
+          <div></div>
+          <div class="msg-slot"><div id="score-msg"></div></div>
+          <div></div>
+
+          <!-- Riga 3 -->
+          <div class="team-label team1"><span class="team-name">TEAM RED</span></div>
+          <div></div>
+          <div class="team-label team2"><span class="team-name">TEAM BLUE</span></div>
+
+          <!-- Riga 4 -->
+          <div id="team1-score" class="team-data team1-points">0</div>
+          <div></div>
+          <div id="team2-score" class="team-data team2-points">0</div>
+
+          <!-- Riga 5 -->
+          <div id="team1-games" class="team-data team1-games">0</div>
+          <div class="game-label">Game</div>
+          <div id="team2-games" class="team-data team2-games">0</div>
+
+          <!-- Riga 6 -->
+          <div id="team1-sets" class="team-data team1-sets">0</div>
+          <div id="current-set">Set: 1</div>
+          <div id="team2-sets" class="team-data team2-sets">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADS CONFIG (solo variabili globali) -->
+  <script>
+    window.adsConfig = {
+      bannerFiles: JSON.parse('{{ banners_json | safe }}'),
+      fullscreenFiles: JSON.parse('{{ fullscreens_json | safe }}'),
+      staticUrl: "{{ url_for('static', filename='') }}",
+      initialBanner: "{{ ad_banner }}",
+      initialFS: "{{ fs_ad }}"
+    };
+  </script>
+
+  <!-- LOGICA ADS ESTERNA -->
+  <script src="{{ url_for('static', filename='js/ads.js') }}" defer></script>
+
+  <!-- Il tuo JS principale -->
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+
+
+  </div> <!-- /#app-root -->
+</body>
+</html>

@@ -1,0 +1,364 @@
+:root{
+  /* ---- Parametri principali ---- */
+  --msg-row-h: 2.6em;
+  --mid-col-w: 8rem;
+  --summary-col-min: 14rem;
+  --summary-col-max: 20vw;
+  --summary-pad: 0.6em 0.8em;
+
+  /* ---- Parametro pubblicitario ---- */
+  --ad-right-width: 20%;   /* larghezza verticale della “gamba” destra */
+  --ad-left-height: 20%;   /* altezza orizzontale della “gamba” inferiore */
+}
+
+/* RESET */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+html, body {
+  overflow: hidden;      /* disattiva scroll */
+  width: 100%;
+  height: 100%;
+  touch-action: none;    /* se vuoi disabilitare anche touch-scroll */
+}
+
+/* =====================================================================
+   Mantieni sempre fisse e GPU‑friendly tutte le “view”
+   ===================================================================== */
+#ad-fullscreen,
+#scoreboard-view{
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;           /* nessuno scroll interno */
+  will-change: transform;     /* hint alla GPU */
+  backface-visibility: hidden;/* evita paint non necessari */
+}
+
+/* HEADER */
+.game-header {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) var(--mid-col-w) minmax(0,1fr);
+  align-items: center;
+  padding: 0 1em;
+  height: 3em;
+}
+.game-header > #status {
+  grid-column: 1 / span 3;
+  text-align: left;
+}
+
+/* MAIN PANEL */
+.game-panel {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.game-content {
+  flex: 1 1 auto;
+  position: relative;    /* per posizionare #ad-container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* CONTENITORE UNICO ADS (nascosto di default) */
+#ad-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transform: translate(-100%, -100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 1;
+}
+
+/* WRAPPER */
+.scoreboard-wrapper {
+  position: relative;
+  flex: 0 0 100%;
+  max-width: 100%;
+  height: 100%;
+  font-size: clamp(14px,4vmin,40px);
+  background: url('../background.png') no-repeat center center;
+  background-size: cover;
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 2;  /* sopra gli ads */
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+  transform-origin: top left;
+}
+
+.scoreboard-wrapper.flipped {
+  background: url('../background2.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* GRID 5x6 */
+.scoreboard-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns:
+    minmax(var(--summary-col-min), var(--summary-col-max))
+    1fr
+    var(--mid-col-w)
+    1fr
+    minmax(var(--summary-col-min), var(--summary-col-max));
+  grid-template-rows: 1fr var(--msg-row-h) 1fr 1fr 1fr 1fr;
+  gap: 0.5em;
+  align-items: center;
+  text-align: center;
+}
+
+/* Summary slots */
+.summary-slot {
+  grid-row: 1 / 7;
+  align-self: start;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.left-slot  { grid-column:1; }
+.right-slot { grid-column:5; }
+
+.set-summary {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--summary-pad);
+  font-size: 0.8em;
+  line-height: 1.2;
+  color: #fff;
+  background: rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  pointer-events: auto;
+}
+.set-summary div {
+  margin-bottom: 0.35em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Riga 1 */
+#serve-box-team1 { grid-column:2; grid-row:1; justify-self:center; }
+#timer           { grid-column:3; grid-row:1; justify-self:center; }
+#serve-box-team2 { grid-column:4; grid-row:1; justify-self:center; }
+
+/* Serve boxes */
+.serve-box {
+  padding: 0.25em 0.9em;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.8em;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.serve-box.red  { background: #c62828; color: #fff; }
+.serve-box.blue { background: #0d47a1; color: #fff; }
+.serve-box.show { opacity: 1; visibility: visible; }
+
+/* Timer */
+#timer {
+  font-size: clamp(28px,5vmin,70px);
+  font-family: monospace;
+  color: #000;
+}
+
+/* Riga 2 (message) */
+.msg-slot { grid-column:3; grid-row:2; position: relative; }
+#score-msg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: max-content;
+  padding: 0.5em 1.2em;
+  background: #fff;
+  color: #000;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Riga 3: team names */
+.team-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  font-weight: bold;
+}
+.team-name { white-space: nowrap; }
+
+.team-label.team1 { grid-column:2; grid-row:3; justify-self:center; }
+.team-label.team2 { grid-column:4; grid-row:3; justify-self:center; }
+
+/* Riga 4: punti */
+#team1-score { grid-column:2; grid-row:4; font-size:3em; }
+#team2-score { grid-column:4; grid-row:4; font-size:3em; }
+
+/* Riga 5: game */
+#team1-games { grid-column:2; grid-row:5; font-size:1.5em; }
+.game-label  { grid-column:3; grid-row:5; color:#000; font-weight:bold; }
+#team2-games { grid-column:4; grid-row:5; font-size:1.5em; }
+
+/* Riga 6: set */
+#team1-sets  { grid-column:2; grid-row:6; font-size:1.5em; }
+#current-set { grid-column:3; grid-row:6; color:#000; font-weight:bold; }
+#team2-sets  { grid-column:4; grid-row:6; font-size:1.5em; }
+
+/* ===== FLIPPED ===== */
+.scoreboard-wrapper.flipped .left-slot  { grid-column:5; }
+.scoreboard-wrapper.flipped .right-slot { grid-column:1; }
+
+.scoreboard-wrapper.flipped #serve-box-team1 { grid-column:4; }
+.scoreboard-wrapper.flipped #serve-box-team2 { grid-column:2; }
+
+.scoreboard-wrapper.flipped .team-label.team1 { grid-column:4; }
+.scoreboard-wrapper.flipped #team1-score        { grid-column:4; }
+.scoreboard-wrapper.flipped #team1-games        { grid-column:4; }
+.scoreboard-wrapper.flipped #team1-sets         { grid-column:4; }
+
+.scoreboard-wrapper.flipped .team-label.team2 { grid-column:2; }
+.scoreboard-wrapper.flipped #team2-score        { grid-column:2; }
+.scoreboard-wrapper.flipped #team2-games        { grid-column:2; }
+.scoreboard-wrapper.flipped #team2-sets         { grid-column:2; }
+
+/* ============================== */
+/* GESTIONE ADS “ad L” */
+
+/* annullo i vecchi .ad-banner */
+.ad-banner { display: none !important; }
+
+/* quando show-ads è attivo, mostro #ad-container e riduco il tabellone */
+.game-content.show-ads {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+
+.game-content.show-ads #ad-container {
+  transform: translate(0, 0);
+}
+
+.game-content.show-ads .scoreboard-wrapper {
+  flex: none !important;
+  max-width: none !important;
+  width:  calc(100% - var(--ad-right-width));
+  height: calc(100% - var(--ad-left-height));
+  transform: none;
+}
+
+/* SLIDING FULL‑SCREEN AD */
+#ad-fullscreen {
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+  display: flex;
+  display: block;
+  z-index: 100;
+}
+
+#scoreboard-view {
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transform: translateY(0);
+  transition: transform 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+body.show-ad #ad-fullscreen {
+  transform: translateY(0);
+}
+body.show-ad #scoreboard-view {
+  transform: translateY(-100%);
+}
+
+body.show-scoreboard #ad-fullscreen {
+  transform: translateY(100%);
+}
+body.show-scoreboard #scoreboard-view {
+  transform: translateY(0);
+}
+
+/* Mini‑scoreboard overlay durante full‑screen ad */
+#mini-scoreboard {
+  position: fixed;
+  top: 1em; right: 1em;
+  width: auto;
+  max-width: 12em;          /* mantiene compatto */
+  padding: 0.5em;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 0.5em;
+  z-index: 200;             /* sempre in primo piano */
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out;
+  display: table;
+  overflow: hidden;
+}
+
+#mini-scoreboard td {
+  padding: 0.25em 0.5em;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+#mini-scoreboard thead th {
+  padding: 0.5em 1em;
+  text-align: center;
+  font-size: 0.95em;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+#mini-scoreboard .team {
+  display: flex;
+  justify-content: space-between;
+}
+
+#mini-scoreboard .mini-name {
+  font-weight: bold;
+  text-align: left;
+  width: 4em;
+}
+
+#mini-scoreboard .mini-points {
+  font-size: 1.2em;
+}
+
+body.show-ad #mini-scoreboard {
+  transform: translateX(0);
+}
+
+body.show-scoreboard #mini-scoreboard {
+  transform: translateX(100%);
+}
