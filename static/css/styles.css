@@ -1,7 +1,6 @@
 :root{
   /* ---- Parametri principali ---- */
   --msg-row-h: 2.6em;
-  --mid-col-w: 8rem;
   --summary-col-min: 14rem;
   --summary-col-max: 20vw;
   --summary-pad: 0.6em 0.8em;
@@ -89,7 +88,7 @@ html, body {
   max-width: 100%;
   height: 100%;
   font-size: clamp(14px,4vmin,40px);
-  background: url('../background.png') no-repeat center center;
+  background:  #000000; /*url('../background.png') no-repeat center center;*/
   background-size: cover;
   padding: 1em;
   display: flex;
@@ -102,7 +101,7 @@ html, body {
 }
 
 .scoreboard-wrapper.flipped {
-  background: url('../background2.png') no-repeat center center;
+  background: #000000; /*url('../background2.png') no-repeat center center;*/
   background-size: cover;
 }
 
@@ -115,18 +114,16 @@ html, body {
   grid-template-columns:
     minmax(var(--summary-col-min), var(--summary-col-max))
     1fr
-    var(--mid-col-w)
-    1fr
     minmax(var(--summary-col-min), var(--summary-col-max));
-  grid-template-rows: 1fr var(--msg-row-h) 1fr 1fr 1fr 1fr;
-  gap: 0.5em;
-  align-items: center;
+  grid-template-rows: 1fr;
+  gap: 1em;
+  align-items: stretch;
   text-align: center;
 }
 
 /* Summary slots */
 .summary-slot {
-  grid-row: 1 / 7;
+  grid-row: 1;
   align-self: start;
   overflow: hidden;
   display: flex;
@@ -135,7 +132,7 @@ html, body {
   justify-content: flex-start;
 }
 .left-slot  { grid-column:1; }
-.right-slot { grid-column:5; }
+.right-slot { grid-column:3; }
 
 .set-summary {
   width: 100%;
@@ -157,10 +154,21 @@ html, body {
   overflow: hidden;
 }
 
-/* Riga 1 */
-#serve-box-team1 { grid-column:2; grid-row:1; justify-self:center; }
-#timer           { grid-column:3; grid-row:1; justify-self:center; }
-#serve-box-team2 { grid-column:4; grid-row:1; justify-self:center; }
+.scoreboard-main {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.score-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  gap: 0.6em;
+}
 
 /* Serve boxes */
 .serve-box {
@@ -186,11 +194,14 @@ html, body {
   color: #000;
 }
 
-/* Riga 2 (message) */
-.msg-slot { grid-column:3; grid-row:2; position: relative; }
+.msg-slot {
+  position: relative;
+  min-height: 2.6em;
+}
 #score-msg {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%,-50%);
   width: max-content;
   padding: 0.5em 1.2em;
@@ -206,48 +217,78 @@ html, body {
   z-index: 10;
 }
 
-/* Riga 3: team names */
+.score-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+
+.score-header,
+.team-row {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(3, 0.8fr);
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 0.6em;
+  border-radius: 8px;
+}
+
+.score-header {
+  background: rgba(255,255,255,0.12);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+.header-cell { color: #fff; }
+
+.team-row {
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.team-row.team1-row { border-left: 4px solid #c62828; }
+.team-row.team2-row { border-left: 4px solid #0d47a1; }
+
 .team-label {
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 0.2em;
   font-weight: bold;
+  text-align: left;
 }
 .team-name { white-space: nowrap; }
 
-.team-label.team1 { grid-column:2; grid-row:3; justify-self:center; }
-.team-label.team2 { grid-column:4; grid-row:3; justify-self:center; }
+.team-data {
+  font-size: 2.2em;
+  font-weight: 700;
+}
 
-/* Riga 4: punti */
-#team1-score { grid-column:2; grid-row:4; font-size:3em; }
-#team2-score { grid-column:4; grid-row:4; font-size:3em; }
+#team1-games, #team2-games,
+#team1-sets, #team2-sets {
+  font-size: 1.5em;
+}
 
-/* Riga 5: game */
-#team1-games { grid-column:2; grid-row:5; font-size:1.5em; }
-.game-label  { grid-column:3; grid-row:5; color:#000; font-weight:bold; }
-#team2-games { grid-column:4; grid-row:5; font-size:1.5em; }
-
-/* Riga 6: set */
-#team1-sets  { grid-column:2; grid-row:6; font-size:1.5em; }
-#current-set { grid-column:3; grid-row:6; color:#000; font-weight:bold; }
-#team2-sets  { grid-column:4; grid-row:6; font-size:1.5em; }
+.set-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 0.4em 0;
+}
+#current-set {
+  color: #000;
+  font-weight: bold;
+  background: #fff;
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
 
 /* ===== FLIPPED ===== */
-.scoreboard-wrapper.flipped .left-slot  { grid-column:5; }
+.scoreboard-wrapper.flipped .left-slot  { grid-column:3; }
 .scoreboard-wrapper.flipped .right-slot { grid-column:1; }
 
-.scoreboard-wrapper.flipped #serve-box-team1 { grid-column:4; }
-.scoreboard-wrapper.flipped #serve-box-team2 { grid-column:2; }
-
-.scoreboard-wrapper.flipped .team-label.team1 { grid-column:4; }
-.scoreboard-wrapper.flipped #team1-score        { grid-column:4; }
-.scoreboard-wrapper.flipped #team1-games        { grid-column:4; }
-.scoreboard-wrapper.flipped #team1-sets         { grid-column:4; }
-
-.scoreboard-wrapper.flipped .team-label.team2 { grid-column:2; }
-.scoreboard-wrapper.flipped #team2-score        { grid-column:2; }
-.scoreboard-wrapper.flipped #team2-games        { grid-column:2; }
-.scoreboard-wrapper.flipped #team2-sets         { grid-column:2; }
+.scoreboard-wrapper.flipped .team1-row { order: 2; }
+.scoreboard-wrapper.flipped .team2-row { order: 1; }
 
 /* ============================== */
 /* GESTIONE ADS “ad L” */

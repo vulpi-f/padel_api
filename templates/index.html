@@ -51,45 +51,50 @@
       <!-- TABELLONE -->
       <div class="scoreboard-wrapper">
         <div class="scoreboard-grid">
-          <!-- Colonna 1 – summary LEFT -->
           <div class="summary-slot left-slot">
             <div id="set-summary-left" class="set-summary"></div>
           </div>
 
-          <!-- Riga 1 -->
-          <div id="serve-box-team1" class="serve-box red"></div>
-          <div id="timer">00:00</div>
-          <div id="serve-box-team2" class="serve-box blue"></div>
+          <div class="scoreboard-main">
+            <div class="score-top">
+              <div id="serve-box-team1" class="serve-box red"></div>
+              <div id="timer">00:00</div>
+              <div id="serve-box-team2" class="serve-box blue"></div>
+            </div>
 
-          <!-- Colonna 5 – summary RIGHT -->
+            <div class="msg-slot"><div id="score-msg"></div></div>
+
+            <div class="score-table">
+              <div class="score-header">
+                <div class="header-cell">Squadra</div>
+                <div class="header-cell">Punti</div>
+                <div class="header-cell">Game</div>
+                <div class="header-cell">Set</div>
+              </div>
+
+              <div class="team-row team1-row">
+                <div class="team-cell team-label team1"><span class="team-name">TEAM RED</span></div>
+                <div id="team1-score" class="team-data team1-points">0</div>
+                <div id="team1-games" class="team-data team1-games">0</div>
+                <div id="team1-sets" class="team-data team1-sets">0</div>
+              </div>
+
+              <div class="team-row team2-row">
+                <div class="team-cell team-label team2"><span class="team-name">TEAM BLUE</span></div>
+                <div id="team2-score" class="team-data team2-points">0</div>
+                <div id="team2-games" class="team-data team2-games">0</div>
+                <div id="team2-sets" class="team-data team2-sets">0</div>
+              </div>
+            </div>
+
+            <div class="set-row">
+              <div id="current-set">Set: 1</div>
+            </div>
+          </div>
+
           <div class="summary-slot right-slot">
             <div id="set-summary-right" class="set-summary"></div>
           </div>
-
-          <!-- Riga 2 -->
-          <div></div>
-          <div class="msg-slot"><div id="score-msg"></div></div>
-          <div></div>
-
-          <!-- Riga 3 -->
-          <div class="team-label team1"><span class="team-name">TEAM RED</span></div>
-          <div></div>
-          <div class="team-label team2"><span class="team-name">TEAM BLUE</span></div>
-
-          <!-- Riga 4 -->
-          <div id="team1-score" class="team-data team1-points">0</div>
-          <div></div>
-          <div id="team2-score" class="team-data team2-points">0</div>
-
-          <!-- Riga 5 -->
-          <div id="team1-games" class="team-data team1-games">0</div>
-          <div class="game-label">Game</div>
-          <div id="team2-games" class="team-data team2-games">0</div>
-
-          <!-- Riga 6 -->
-          <div id="team1-sets" class="team-data team1-sets">0</div>
-          <div id="current-set">Set: 1</div>
-          <div id="team2-sets" class="team-data team2-sets">0</div>
         </div>
       </div>
     </div>
