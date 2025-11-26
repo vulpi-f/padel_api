@@ -51,48 +51,47 @@
       <!-- TABELLONE -->
       <div class="scoreboard-wrapper">
         <div class="scoreboard-grid">
-          <!-- Colonna 1 – summary LEFT -->
           <div class="summary-slot left-slot">
             <div id="set-summary-left" class="set-summary"></div>
           </div>
 
           <div class="scoreboard-main">
-            <div class="scoreboard-top">
+            <div class="score-top">
               <div id="serve-box-team1" class="serve-box red"></div>
               <div id="timer">00:00</div>
               <div id="serve-box-team2" class="serve-box blue"></div>
             </div>
 
-            <div class="scoreboard-table">
-              <div class="score-row header">
-                <div class="cell heading">Squadra</div>
-                <div class="cell heading">Punti</div>
-                <div class="cell heading">Game</div>
-                <div class="cell heading">Set</div>
+            <div class="msg-slot"><div id="score-msg"></div></div>
+
+            <div class="score-table">
+              <div class="score-header">
+                <div class="header-cell">Squadra</div>
+                <div class="header-cell">Punti</div>
+                <div class="header-cell">Game</div>
+                <div class="header-cell">Set</div>
               </div>
 
-              <div class="score-row team-row">
-                <div class="cell team-label team1"><span class="team-name">TEAM RED</span></div>
-                <div id="team1-score" class="cell team-data team1-points">0</div>
-                <div id="team1-games" class="cell team-data team1-games">0</div>
-                <div id="team1-sets" class="cell team-data team1-sets">0</div>
+              <div class="team-row team1-row">
+                <div class="team-cell team-label team1"><span class="team-name">TEAM RED</span></div>
+                <div id="team1-score" class="team-data team1-points">0</div>
+                <div id="team1-games" class="team-data team1-games">0</div>
+                <div id="team1-sets" class="team-data team1-sets">0</div>
               </div>
 
-              <div class="score-row team-row">
-                <div class="cell team-label team2"><span class="team-name">TEAM BLUE</span></div>
-                <div id="team2-score" class="cell team-data team2-points">0</div>
-                <div id="team2-games" class="cell team-data team2-games">0</div>
-                <div id="team2-sets" class="cell team-data team2-sets">0</div>
+              <div class="team-row team2-row">
+                <div class="team-cell team-label team2"><span class="team-name">TEAM BLUE</span></div>
+                <div id="team2-score" class="team-data team2-points">0</div>
+                <div id="team2-games" class="team-data team2-games">0</div>
+                <div id="team2-sets" class="team-data team2-sets">0</div>
               </div>
             </div>
 
-            <div class="scoreboard-footer">
-              <div class="msg-slot"><div id="score-msg"></div></div>
+            <div class="set-row">
               <div id="current-set">Set: 1</div>
             </div>
           </div>
 
-          <!-- Colonna 3 – summary RIGHT -->
           <div class="summary-slot right-slot">
             <div id="set-summary-right" class="set-summary"></div>
           </div>

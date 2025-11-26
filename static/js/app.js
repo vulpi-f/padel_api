@@ -17,7 +17,7 @@ const ChangeoverMode = {
   ONLY_TB:      'only_tb'         // solo tie-break ogni 6 punti
 };
 // Scegli la modalità desiderata qui:
-let changeoverMode = ChangeoverMode.STANDARD;
+let changeoverMode = ChangeoverMode.NEVER;
 
 const matchConfig = {
   maxSets: 5 // es. 3 per “best of 3”, 5 per “best of 5”, o 'unlimited'
