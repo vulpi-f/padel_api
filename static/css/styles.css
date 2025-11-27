@@ -1,13 +1,15 @@
 :root{
   /* ---- Parametri principali ---- */
   --msg-row-h: 2.6em;
+  --mid-col-w: 8rem;
   --summary-col-min: 14rem;
   --summary-col-max: 20vw;
   --summary-pad: 0.6em 0.8em;
 
   /* ---- Parametro pubblicitario ---- */
-  --ad-right-width: 20%;   /* larghezza verticale della “gamba” destra */
-  --ad-left-height: 20%;   /* altezza orizzontale della “gamba” inferiore */
+  --ad-right-width: 20%;   /* legacy */
+  --ad-left-height: 20%;   /* legacy */
+  --banner-height: 20vh;
 }
 
 /* RESET */
@@ -74,11 +76,13 @@ html, body {
 /* CONTENITORE UNICO ADS (nascosto di default) */
 #ad-container {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  transform: translate(-100%, -100%);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--banner-height);
+  transform: translateY(100%);
   transition: transform 0.5s ease-in-out;
-  z-index: 1;
+  z-index: 5;
 }
 
 /* WRAPPER */
@@ -312,23 +316,14 @@ html, body {
 /* annullo i vecchi .ad-banner */
 .ad-banner { display: none !important; }
 
-/* quando show-ads è attivo, mostro #ad-container e riduco il tabellone */
-.game-content.show-ads {
-  display: flex !important;
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-}
-
 .game-content.show-ads #ad-container {
-  transform: translate(0, 0);
+  transform: translateY(0);
 }
 
 .game-content.show-ads .scoreboard-wrapper {
-  flex: none !important;
-  max-width: none !important;
-  width:  calc(100% - var(--ad-right-width));
-  height: calc(100% - var(--ad-left-height));
-  transform: none;
+  height: calc(100% - var(--banner-height));
+  padding-bottom: 1em;
+  font-size: clamp(12px, 3.6vmin, 32px);
 }
 
 /* SLIDING FULL‑SCREEN AD */
