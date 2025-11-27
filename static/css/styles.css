@@ -321,9 +321,7 @@ html, body {
 }
 
 .game-content.show-ads .scoreboard-wrapper {
-  height: calc(100% - var(--banner-height));
-  padding-bottom: 1em;
-  font-size: clamp(12px, 3.6vmin, 32px);
+   padding-bottom: calc(var(--banner-height) + 0.5em);
 }
 
 /* SLIDING FULL‑SCREEN AD */

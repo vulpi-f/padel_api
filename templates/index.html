@@ -107,7 +107,8 @@
       fullscreenFiles: JSON.parse('{{ fullscreens_json | safe }}'),
       staticUrl: "{{ url_for('static', filename='') }}",
       initialBanner: "{{ ad_banner }}",
-      initialFS: "{{ fs_ad }}"
+      initialFS: "{{ fs_ad }}",
+      bannerSize: { width: 1024, height: 80 }
     };
   </script>
 

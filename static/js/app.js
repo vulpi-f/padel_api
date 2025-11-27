@@ -39,7 +39,14 @@ const adConfig = {
   durations: {
     fullScreen: 5,  // durata in secondi della full‑screen ad
     banner:     5   // durata in secondi della banner ad
-  }
+  },
+  bannerMode: 'always' // 'triggered' | 'always' | 'never'
+};
+
+const BannerMode = {
+  TRIGGERED: 'triggered',
+  ALWAYS: 'always',
+  NEVER: 'never'
 };
 
 const adManager = {
@@ -47,7 +54,7 @@ const adManager = {
   _bannerTimeoutId: null,
   showFullScreen() {
     if (!adConfig.views.fullScreen) return;
-    this.hideBanner();
+    this.hideBanner(true); // forza hide durante fullscreen
     clearTimeout(this._fsTimeoutId);
     document.body.classList.add('show-ad');
     document.body.classList.remove('show-scoreboard');
@@ -60,18 +67,22 @@ const adManager = {
     clearTimeout(this._fsTimeoutId);
     document.body.classList.add('show-scoreboard');
     document.body.classList.remove('show-ad');
+    if (adConfig.bannerMode === BannerMode.ALWAYS) {
+      this.showBanner(true); // riporta il banner fisso
+    }
   },
-  showBanner() {
-    if (!adConfig.views.sideBanners) return;
+  showBanner(persistent = false) {
+    if (!adConfig.views.sideBanners || adConfig.bannerMode === BannerMode.NEVER) return;
     if (document.body.classList.contains('show-ad')) return;
     clearTimeout(this._bannerTimeoutId);
     document.querySelector('.game-content').classList.add('show-ads');
-    // auto‑hide dopo durata configurata
-    if (adConfig.durations.banner > 0) {
+    // auto‑hide dopo durata configurata solo se non fisso
+    if (!persistent && adConfig.bannerMode !== BannerMode.ALWAYS && adConfig.durations.banner > 0) {
       this._bannerTimeoutId = setTimeout(() => this.hideBanner(), adConfig.durations.banner * 1000);
     }
   },
-  hideBanner() {
+  hideBanner(force = false) {
+    if (!force && adConfig.bannerMode === BannerMode.ALWAYS) return;
     clearTimeout(this._bannerTimeoutId);
     document.querySelector('.game-content').classList.remove('show-ads');
   },
@@ -81,10 +92,12 @@ const adManager = {
     const mode = adConfig.triggers[evt];  // 'fullScreen' | 'banner' | null
     if (mode === 'fullScreen') {
       this.showFullScreen();
-    } else if (mode === 'banner') {
-      this.showBanner();
+      return;
     }
-    // null => nessuna ad
+    // tabellone visibile: banner su trigger o quando sempre attivo
+    if (mode === 'banner' || adConfig.bannerMode === BannerMode.ALWAYS) {
+      this.showBanner(adConfig.bannerMode === BannerMode.ALWAYS);
+    }
   }
 };
 
@@ -180,20 +193,24 @@ const scoreConfig = {
   "SHORT PRESS : RED": { side: "team1", delta:  1 }
 };
 
-// —–– Landing ad all’avvio —––
+// --- Landing ad all'avvio ---
 function initialAd() {
   const mode = adConfig.triggers.onMatchStart; // 'fullScreen' | 'banner' | null
   if (mode === 'fullScreen') {
     adManager.showFullScreen();
+    return;
   }
   else if (mode === 'banner') {
-    adManager.showBanner();
+    adManager.showBanner(adConfig.bannerMode === BannerMode.ALWAYS);
+    return;
   }
-  else {
-    // nessuna ad => mostro subito il tabellone
-    adManager.hideFullScreen();
-    adManager.hideBanner();
+  if (adConfig.bannerMode === BannerMode.ALWAYS) {
+    adManager.showBanner(true);
+    return;
   }
+  // nessuna ad => mostro subito il tabellone
+  adManager.hideFullScreen();
+  adManager.hideBanner();
 }
 
 // ===== Timer =====
