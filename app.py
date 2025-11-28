@@ -14,7 +14,7 @@ HOST = os.getenv("APP_HOST", "0.0.0.0")
 PORT = int(os.getenv("APP_PORT", 5000))
 TARGET_ADDRESS = os.getenv("BLE_TARGET_ADDRESS", "16:11:28:03:1C:81")
 NOTIFY_CHAR_UUID = os.getenv("BLE_NOTIFY_CHAR_UUID", "00001c0f-d102-11e1-9b23-000efb0000b2")
-USE_BLE = os.getenv("USE_BLE", "0") == "1"
+USE_BLE = os.getenv("USE_BLE", "1") == "1"
 
 
 ALLOWED_EXT = (".png", ".jpg", ".jpeg", ".gif", ".mp4", ".webm")
